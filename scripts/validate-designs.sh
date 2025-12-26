@@ -1,36 +1,74 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-SCHEMA="schema/design.schema.json"
+# ----------------------------
+# Paths
+# ----------------------------
+REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+SCHEMA="$REPO_ROOT/schema/design.schema.json"
+DESIGNS_DIR="$REPO_ROOT/designs"
+
+# ----------------------------
+# Prerequisites
+# ----------------------------
+command -v yq >/dev/null || { echo "❌ yq not found. Install yq v4+"; exit 1; }
+command -v jq >/dev/null || { echo "❌ jq not found. Install jq"; exit 1; }
+command -v ajv >/dev/null || { echo "❌ ajv-cli not found. Install ajv-cli"; exit 1; }
+
+# ----------------------------
+# Validation start
+# ----------------------------
+echo "🔍 Validating design solutions in $DESIGNS_DIR"
+echo "================================"
+echo
+
 FAILED=0
+COUNT=0
 
-echo "🔍 Validating design metadata…"
-
-if ! command -v yq >/dev/null; then
-  echo "❌ yq not found"
-  exit 2
+if [ ! -d "$DESIGNS_DIR" ]; then
+  echo "❌ Designs folder not found at $DESIGNS_DIR"
+  exit 1
 fi
 
-if ! command -v ajv >/dev/null; then
-  echo "❌ ajv not found"
-  exit 2
-fi
+while IFS= read -r -d '' FILE; do
+  COUNT=$((COUNT + 1))
 
-for file in $(find designs -name design.md 2>/dev/null); do
-  echo "→ $file"
+  # --- Extract front matter only (between first two --- lines) ---
+  FRONTMATTER=$(sed -n '/^---$/,/^---$/p' "$FILE" | sed '1d;$d')
 
-  # extract YAML front-matter
-  yq eval 'select(fileIndex == 0)' "$file" >/tmp/design.yaml
-  yq -o=json '.' /tmp/design.yaml >/tmp/design.json
+  # Convert YAML to JSON safely
+  JSON=$(echo "$FRONTMATTER" | yq eval -o=json)
 
-  if ! ajv validate -s "$SCHEMA" -d /tmp/design.json; then
-    echo "❌ Validation failed: $file"
+  # --- Extract design_id and title for printing ---
+  DESIGN_ID=$(echo "$JSON" | jq -r '.design_id // "unknown"')
+  TITLE=$(echo "$JSON" | jq -r '.title // "unknown"')
+
+  echo "▶ Design: ${DESIGN_ID} — ${TITLE}"
+  echo "  File: $FILE"
+
+  # --- YAML syntax check ---
+  if ! echo "$FRONTMATTER" | yq eval '.' >/dev/null 2>&1; then
+    echo "  ❌ YAML syntax error in front matter"
     FAILED=1
-  else
-    echo "✅ OK"
+    break
   fi
-done
 
-rm -f /tmp/design.yaml /tmp/design.json
+  # --- Schema validation ---
+  if ! echo "$JSON" | ajv validate --strict=false -s "$SCHEMA" -d /dev/stdin >/dev/null; then
+    echo "  ❌ Schema validation failed"
+    FAILED=1
+    break
+  fi
 
-exit $FAILED
+  echo "  ✅ Valid"
+  echo
+done < <(find "$DESIGNS_DIR" -name design.md -print0)
+
+echo "================================"
+
+if [ "$FAILED" -ne 0 ]; then
+  echo "❌ Validation failed after $COUNT design(s)"
+  exit 1
+fi
+
+echo "🎉 All $COUNT design solution(s) validated successfully"

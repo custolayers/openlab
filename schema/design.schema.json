@@ -1,7 +1,8 @@
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "OpenLab Design Solution",
+  "$id": "design.schema.json",
+  "title": "Design Solution",
   "type": "object",
+
   "required": [
     "design_id",
     "title",
@@ -9,38 +10,52 @@
     "status",
     "category"
   ],
+
   "properties": {
     "design_id": {
       "type": "string",
       "pattern": "^[a-z0-9\\-]+$"
     },
+
     "title": {
       "type": "string",
       "minLength": 5
     },
+
     "summary": {
       "type": "string",
       "minLength": 20
     },
+
     "status": {
       "type": "string",
-      "enum": ["experimental", "validated", "stable", "deprecated"]
+      "enum": [
+        "experimental",
+        "validated",
+        "stable",
+        "deprecated"
+      ]
     },
+
     "category": {
       "type": "string"
     },
+
     "context": {
       "type": "array",
       "items": { "type": "string" }
     },
+
     "tags": {
       "type": "array",
       "items": { "type": "string" }
     },
+
     "tested_materials": {
       "type": "array",
       "items": { "type": "string" }
     },
+
     "bom": {
       "type": "array",
       "items": {
@@ -49,9 +64,11 @@
         "properties": {
           "name": { "type": "string" },
           "role": { "type": "string" }
-        }
+        },
+        "additionalProperties": false
       }
     }
   },
+
   "additionalProperties": false
 }

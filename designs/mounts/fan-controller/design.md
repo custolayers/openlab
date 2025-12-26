@@ -1,10 +1,6 @@
 ---
 design_id: mounts-fan-controller
 title: Fan Controller 3D Printer Cabinet
-summary: >
-  Short summary of the design solution.
-  Explain the intent, context, and what problem
-  this solution is addressing.
 status: experimental
 category: mounts
 context:
