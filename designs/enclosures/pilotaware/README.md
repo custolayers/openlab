@@ -1,16 +1,3 @@
----
-design_id: mounts-fan-controller
-title: Fan Controller 3D Printer Cabinet
-status: experimental
-category: mounts
-context:
-  - example-context
-tags:
-  - example-tag
-tested_materials: []
-bom: []
----
-
 ## Overview
 
 Describe the design solution at a high level.
