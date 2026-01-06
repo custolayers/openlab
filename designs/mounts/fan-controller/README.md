@@ -21,12 +21,22 @@ What constraints or goals influenced the design?
 
 ## Print Settings
 
+See `slicer-profiles/` folder for complete PrusaSlicer project files (.3mf) with all print settings embedded.
+
+**Quick Reference:**
 - **Material**: PLA/PETG/ABS
 - **Layer Height**: 0.2mm
-- **Infill**: 15-20%
 - **Supports**: Yes/No
-- **Print Time**: ~X hours
-- **Material Used**: ~Xg
+
+## Files & Resources
+
+- **CAD Source**: `cad/source/` - Original editable files (.f3d, .step)
+- **STL Export**: `cad/export/` - Print-ready STL files
+- **Slicer Profiles**: `slicer-profiles/` - PrusaSlicer .3mf with all settings
+- **Images**: `images/` - Cover image, renders, and photos
+- **Documentation**: `docs/` - Detailed guides and notes
+
+See `docs/folder-structure.md` for naming conventions and organization details.
 
 ## Assembly
 
@@ -50,7 +60,7 @@ What constraints or goals influenced the design?
 
 ## Version History
 
-- **v1.0** (2026-01-05) - Initial release
+- **v1.0** (2026-01-06) - Initial release
 
 ## License
 

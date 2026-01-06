@@ -1,14 +1,10 @@
 # Printing Guide
 
-## Recommended Settings
+## Slicer Profiles
 
-- **Printer**: [Your printer model]
-- **Material**: PLA/PETG/ABS
-- **Nozzle**: 0.4mm
-- **Layer Height**: 0.2mm
-- **Infill**: 15-20%
-- **Supports**: Yes/No
-- **Adhesion**: Brim/Raft/None
+Complete PrusaSlicer .3mf files with all settings are available in `slicer-profiles/` folder.
+
+Simply open the .3mf file in PrusaSlicer and slice - all settings are pre-configured.
 
 ## Print Orientation
 
