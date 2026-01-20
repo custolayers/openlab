@@ -117,8 +117,8 @@ See \`docs/folder-structure.md\` for naming conventions and organization details
 
 ## License
 
-This design is released under [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) 
-or your preferred license.
+This design is released under [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/) - 
+Personal and educational use only. Commercial use requires permission.
 EOF
 
 # -------------------------------------------------------------------
